@@ -21,9 +21,6 @@ class Blockbuster:
         self.customers.append(new_customer)
         print(f"\nCustomer {new_customer.id}: {new_customer.first_name} {new_customer.last_name} ({new_customer.account_type}) has been added.")
 
-        for x in self.customers:
-            print(x)
-
     def rent_video(self):
         print(f"\nInput Customer ID for customer renting a video:\n")
         for customer in self.customers:
