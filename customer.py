@@ -28,7 +28,3 @@ class Customer:
             file.close()
         
         return customers
-
-
-# michael = Customer('1234','px','Michael','Heinzinger','The Dark Knight/Inception/The Prestige')
-# print(michael)

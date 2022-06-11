@@ -31,6 +31,7 @@ while(mode != '6'):
         for customer in blockbuster.customers:
             print(f"Customer {customer.id} - {customer.first_name} {customer.last_name}")
         
+        # Checks to make sure user entered a valid input
         validity = False
         while validity != True:
             customer_id = input("\n> ")
@@ -43,12 +44,15 @@ while(mode != '6'):
 
     elif mode == '3': # Add a new customer
 
-        customer_data = {'id': str(len(blockbuster.customers)+1)} # This ensures that every new entry has a new ID
+        # This ensures that every new entry has a new ID
+        customer_data = {'id': str(len(blockbuster.customers)+1)}
+
         customer_data['first_name'] = input("\nFirst name: ")
         customer_data['last_name'] = input("Last name: ")
 
+        # Ensures user enters a valid input
         validity = False
-        while validity != True: # Ensures user enters a valid input
+        while validity != True: 
             account_type = input("\nSelect account type:\n\n1. Standard account: max 1 rental out at a time\n2. Premium account: max 3 rentals out at a time\n3. standard family account: max 1 rental out at a time AND can not rent any 'R' rated movies\n4. premium family account: max 3 rentals out at a time AND can not rent any 'R' rated movies\n\n> ")
             if valid(4, account_type):
                 validity = True
@@ -71,10 +75,17 @@ while(mode != '6'):
         Blockbuster.add_customer(blockbuster, customer_data)
 
     elif mode == '4': # Rent video
+
         Blockbuster.rent_video(blockbuster)
+
     elif mode == '5': # Return video
+
         Blockbuster.return_video(blockbuster)
+
     elif mode == '6': # Exit
+
         print("\nGoodbye!")
+
     else:   # If input is not 1-6
+        
         print("\nInvalid input, please select from options 1-6.")

@@ -26,6 +26,3 @@ class Inventory:
             file.close()
         
         return inventory
-
-# a_new_hope = Inventory('1234','Star Wars - A New Hope','PG','1977','1')
-# print(a_new_hope)

@@ -18,11 +18,12 @@ class Blockbuster:
 
     def add_customer(self, customer_data):
         new_customer = Customer(customer_data['id'],customer_data['account_type'],customer_data['first_name'],customer_data['last_name'],customer_data['current_video_rentals'])
-        self.customers.append(new_customer)
+        self.customers.append(new_customer) # Add new customer to customer list
         print(f"\nCustomer {new_customer.id}: {new_customer.first_name} {new_customer.last_name} ({new_customer.account_type}) has been added.")
 
     def rent_video(self):
         print(f"\nInput Customer ID for customer renting a video:\n")
+        # Displays a list of customers for the user to choose from
         for customer in self.customers:
             print(f"Customer {customer.id} - {customer.first_name} {customer.last_name}")
         
@@ -37,18 +38,23 @@ class Blockbuster:
             else:
                 validity = True
         
+        # Cycles through all customers in the list
         for customer in self.customers:
-            videos = 'videos'
+            videos = 'videos' # Used for string formatting purposes
+
             if customer.id == customer_id:
                 # Make movie titles easier to work with
                 if len(customer.current_video_rentals) != 0:
+                    # Split rented movies into a list of the movie titles
                     rentals = customer.current_video_rentals.split('/')
                 else:
+                    # If customer doesn't have any movies checked out, initiate an empty list
                     rentals = []
                 
+                # Declaring variables to help with logic
                 account_type = customer.account_type
                 amount_of_rentals = 0
-                restricted = False
+                restricted = False  # If a customer has a family account, this will turn to True
 
                 # Set account type rules
                 if account_type == 'sx':
@@ -62,15 +68,18 @@ class Blockbuster:
                     amount_of_rentals = 3
                     restricted = True
 
+                # For output string formatting
                 if len(rentals) == 1:
                     videos = 'video'
 
                 print(f"\nCustomer {customer.first_name} {customer.last_name} has a {account_type} account.\nThey currently have {len(rentals)} {videos} checked out.")
 
+                # Checks if customer has not reached their rental limit yet
                 if len(rentals) < amount_of_rentals:
                     print(f"\nPlease enter the title of the movie that {customer.first_name} {customer.last_name} would like to check out:")
                     self.view_inventory()
                     
+                    # Validates user input
                     validity = False
                     while validity != True:
                         movie = input("\n> ")
@@ -81,28 +90,30 @@ class Blockbuster:
                         if validity == False:
                             print(f"\nTitle entered does not match any of the listed titles. Please enter the title again (case sensitive).")
 
+                    # Cycles through all movies in inventory
                     for title in self.inventory:
                         if movie == title.title:
-                            if restricted == False:
-                                if title.copies_available != '0':
+                            if restricted == False: # Logic for customer that does not have a family account
+                                if title.copies_available != '0': # Does not let user rent a movie that isn't available
                                     if len(customer.current_video_rentals) > 0:
                                         customer.current_video_rentals+= f"/{title.title}" # Update customer current video rentals
                                     else:
                                         customer.current_video_rentals+= f"{title.title}" # Update customer current video rentals
                                     title.copies_available = str(int(title.copies_available)-1) # Update inventory
                                     print(f"\n {customer.first_name} {customer.last_name} successfully rented {title.title} ({title.release_year})")
-                                else:
+                                else: # Prints if customer trys to rent a movie that has no available copies
                                     print(f"\nSorry, there are no more copies of {movie} available at this time.")
-                            elif restricted == True and title.rating == 'R':
+                            elif restricted == True and title.rating == 'R': # Prints if a customer tries to rent an R-rated movie with a family account
                                 print(f"\n{customer.first_name} {customer.last_name} has a family account.\nThey cannot rent 'R' rated movies.")
-                    
-
+                
                 else: # Does not let someone rent a movie if they are already at their limit per their account type
                     print(f"\n{customer.first_name} {customer.last_name} is already at their max amount of rentals.")
                     print(len(rentals))
     
     def return_video(self):
         print(f"\nInput Customer ID for customer returning a video:\n")
+        
+        # Provides user a list of customers to select from
         for customer in self.customers:
             print(f"Customer {customer.id} - {customer.first_name} {customer.last_name}")
         
@@ -119,12 +130,15 @@ class Blockbuster:
 
         for customer in self.customers:
             if customer_id == customer.id:
+                # Shows what movies that customer currently has rented
                 print(customer)
             
+                # Splits movies into a list of titles
                 rentals = customer.current_video_rentals.split('/')
                 
                 print(f"\nWhich movie is {customer.first_name} {customer.last_name} returning (title name)?")
 
+                # Verifies user input
                 validity = False
                 while validity != True:
                     movie = input("\n> ")
@@ -146,4 +160,5 @@ class Blockbuster:
                 for i, title in enumerate(rentals):
                     rentals[i]= title + '/'
 
+                # Update customer object's current video rentals
                 customer.current_video_rentals = ''.join(rentals)
