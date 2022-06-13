@@ -1,6 +1,4 @@
 from blockbuster import Blockbuster
-from inventory import Inventory
-from customer import Customer
 
 # Function used to test user input validity
 def valid(options, user_input):
@@ -13,10 +11,12 @@ def valid(options, user_input):
         return True
 
 
+# Initialize object
 blockbuster = Blockbuster()
 
 print("\n== Welcome to Blockbuster! ==")
 
+# Output menu options
 mode = None
 while(mode != '6'):
     mode = input("\nWhat would you like to do?\n1. View store video inventory\n2. View customer rented videos\n3. Add a new customer\n4. Rent video\n5. Return video\n6. Exit\n\n> ")
@@ -53,7 +53,7 @@ while(mode != '6'):
         # Ensures user enters a valid input
         validity = False
         while validity != True: 
-            account_type = input("\nSelect account type:\n\n1. Standard account: max 1 rental out at a time\n2. Premium account: max 3 rentals out at a time\n3. standard family account: max 1 rental out at a time AND can not rent any 'R' rated movies\n4. premium family account: max 3 rentals out at a time AND can not rent any 'R' rated movies\n\n> ")
+            account_type = input("\nSelect account type (1-4):\n\n1. Standard account: max 1 rental out at a time\n2. Premium account: max 3 rentals out at a time\n3. Standard family account: max 1 rental out at a time AND can not rent any 'R' rated movies\n4. Premium family account: max 3 rentals out at a time AND can not rent any 'R' rated movies\n\n> ")
             if valid(4, account_type):
                 validity = True
             else:

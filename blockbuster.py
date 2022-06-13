@@ -48,7 +48,7 @@ class Blockbuster:
                     # Split rented movies into a list of the movie titles
                     rentals = customer.current_video_rentals.split('/')
                 else:
-                    # If customer doesn't have any movies checked out, initiate an empty list
+                    # If customer doesn't have any movies checked out, initialize an empty list
                     rentals = []
                 
                 # Declaring variables to help with logic
@@ -77,6 +77,8 @@ class Blockbuster:
                 # Checks if customer has not reached their rental limit yet
                 if len(rentals) < amount_of_rentals:
                     print(f"\nPlease enter the title of the movie that {customer.first_name} {customer.last_name} would like to check out:")
+                    
+                    # Prints out a list of movies to pick from
                     self.view_inventory()
                     
                     # Validates user input
@@ -92,7 +94,7 @@ class Blockbuster:
 
                     # Cycles through all movies in inventory
                     for title in self.inventory:
-                        if movie == title.title:
+                        if movie == title.title: # Checks to see if user input matches a movie in the inventory
                             if restricted == False: # Logic for customer that does not have a family account
                                 if title.copies_available != '0': # Does not let user rent a movie that isn't available
                                     if len(customer.current_video_rentals) > 0:
@@ -100,14 +102,28 @@ class Blockbuster:
                                     else:
                                         customer.current_video_rentals+= f"{title.title}" # Update customer current video rentals
                                     title.copies_available = str(int(title.copies_available)-1) # Update inventory
-                                    print(f"\n {customer.first_name} {customer.last_name} successfully rented {title.title} ({title.release_year})")
+                                    print(f"\n{customer.first_name} {customer.last_name} successfully rented {title.title} ({title.release_year})")
+                                
                                 else: # Prints if customer trys to rent a movie that has no available copies
                                     print(f"\nSorry, there are no more copies of {movie} available at this time.")
+                            
                             elif restricted == True and title.rating == 'R': # Prints if a customer tries to rent an R-rated movie with a family account
                                 print(f"\n{customer.first_name} {customer.last_name} has a family account.\nThey cannot rent 'R' rated movies.")
+                            
+                            else: # Customer has a restriced account, rents a movie that is not rated 'R'
+                                if title.copies_available != '0': # Does not let user rent a movie that isn't available
+                                    if len(customer.current_video_rentals) > 0:
+                                        customer.current_video_rentals+= f"/{title.title}" # Update customer current video rentals
+                                    else:
+                                        customer.current_video_rentals+= f"{title.title}" # Update customer current video rentals
+                                    title.copies_available = str(int(title.copies_available)-1) # Update inventory
+                                    print(f"\n{customer.first_name} {customer.last_name} successfully rented {title.title} ({title.release_year})")
+                                
+                                else: # Prints if customer trys to rent a movie that has no available copies
+                                    print(f"\nSorry, there are no more copies of {movie} available at this time.")
                 
                 else: # Does not let someone rent a movie if they are already at their limit per their account type
-                    print(f"\n{customer.first_name} {customer.last_name} is already at their max amount of rentals.")
+                    print(f"\n{customer.first_name} {customer.last_name} is already at their rental limit.")
                     print(len(rentals))
     
     def return_video(self):
@@ -146,7 +162,7 @@ class Blockbuster:
                         if movie == title:
                             validity = True
                             rentals.pop(i) # Remove title from rental list
-                            print(f"\n {customer.first_name} {customer.last_name} returned {title}.")
+                            print(f"\n{customer.first_name} {customer.last_name} returned {title}.")
                             break
                     if validity == False:
                         print(f"\nTitle entered does not match any of the listed titles. Please enter the title again (case sensitive).")
